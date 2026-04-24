@@ -1,0 +1,85 @@
+{
+  "plugin_id": "osaurus.calendar",
+  "name": "Sentra Calendar",
+  "description": "Interact with macOS Calendar.app - get events, search, create events, and open events",
+  "homepage": "https://github.com/aidenmi8/sentra-ai",
+  "license": "MIT",
+  "authors": [
+    "Sentra Team"
+  ],
+  "capabilities": {
+    "tools": [
+      {
+        "name": "get_events",
+        "description": "Get calendar events in a specified date range"
+      },
+      {
+        "name": "search_events",
+        "description": "Search for calendar events that match the search text"
+      },
+      {
+        "name": "create_event",
+        "description": "Create a new calendar event"
+      },
+      {
+        "name": "open_event",
+        "description": "Open a specific calendar event in the Calendar app"
+      }
+    ],
+    "skills": null
+  },
+  "public_keys": {
+    "minisign": "RWSAW6A8VcBx/qiH6lnReSCbTsEoqRsuUhuJxgUwSS/5kpIMPd05Uvwj"
+  },
+  "versions": [
+    {
+      "version": "1.0.4",
+      "release_date": "2025-12-22",
+      "artifacts": [
+        {
+          "os": "macos",
+          "arch": "arm64",
+          "min_macos": "13.0",
+          "url": "https://github.com/osaurus-ai/osaurus-calendar/releases/download/1.0.4/osaurus.calendar-1.0.4.zip",
+          "sha256": "e1d4215d1ff78f75ca82a9da0905db5e583d3fa77faad6ad84f75d2352644bc2",
+          "size": 51935,
+          "minisign": {
+            "signature": "untrusted comment: signature from minisign secret key\nRWSAW6A8VcBx/pUQu2hGDhGN4s8EjjOrnd7TTgI04xZ7RO60+cMadZ3AjchhxXqbq6RbtM9P7PGodMtxMLXFT9tvxOrKokMGaAs=\ntrusted comment: timestamp:1766405963\tfile:osaurus.calendar-1.0.4.zip\n6j2C5zONXOgkwdPJBXKYu+/4fN87smEzDNRHdkUXHmlrj0h5gFg1pvOFLE+j0F0eLJDaWDX3JPoruVw6FAFiCg=="
+          }
+        }
+      ]
+    },
+    {
+      "version": "1.0.6",
+      "release_date": "2026-01-27",
+      "artifacts": [
+        {
+          "os": "macos",
+          "arch": "arm64",
+          "url": "https://github.com/osaurus-ai/osaurus-calendar/releases/download/1.0.6/osaurus.calendar-1.0.6-macos-arm64.zip",
+          "sha256": "569ac65d9fee2250bd3c03a160da5e3f1caf53c75c10e098ed4d2a4e53f76f47",
+          "min_macos": "13.0",
+          "minisign": {
+            "signature": "untrusted comment: signature from minisign secret key\nRWSAW6A8VcBx/oualkKcZl/MMax5Ukc4Tk1jVxt2pObRw0/t3JoDlOPFUq3CkHwHvE8WVzulK95c/SiKk5vmFG5c7Kwi/rEx5A0=\ntrusted comment: timestamp:1769500236\tfile:osaurus.calendar-1.0.6-macos-arm64.zip\nAfYMKSkckMr7n1Um6iGnT+xeAvLGnaMvEFclJYGqWeqDlqShVyaR1r3o8XgCLKempis+pB7m6zb2d/Rp8HKSAg=="
+          }
+        }
+      ]
+    },
+    {
+      "version": "1.0.7",
+      "release_date": "2026-02-10",
+      "artifacts": [
+        {
+          "os": "macos",
+          "arch": "arm64",
+          "url": "https://github.com/osaurus-ai/osaurus-calendar/releases/download/1.0.7/osaurus.calendar-1.0.7-macos-arm64.zip",
+          "sha256": "509feb9f12176e51bf17d0e7cc3ad34093d4be65a6e8907b070564fbb61e5f1f",
+          "min_macos": "13.0",
+          "minisign": {
+            "signature": "untrusted comment: signature from minisign secret key\nRWSAW6A8VcBx/tmf4yGpHWTzwLwu+6fTU6hww+l1DKllqGSFyi5+Z7qonYKLoCtvC3lroJEOwIAkEQx4HLBY6+eos4tJWpRO0Qw=\ntrusted comment: timestamp:1770767003\tfile:osaurus.calendar-1.0.7-macos-arm64.zip\n4OKfdmoTUUSBLHQLoAFwMGpf0R4Myq9c8uyaPBm4cnqyiOHJnFSHtX/GYojAh/bQ8qO93Jl1rIOsWQOJZijeBQ=="
+          }
+        }
+      ]
+    }
+  ]
+}

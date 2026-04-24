@@ -1,0 +1,194 @@
+{
+  "plugin_id": "osaurus.macos-use",
+  "name": "Sentra macOS Use",
+  "description": "Efficient macOS automation via accessibility APIs - element-based interactions, smart filtering, and decoupled actions/observations for minimal context usage",
+  "homepage": "https://github.com/aidenmi8/sentra-ai",
+  "license": "MIT",
+  "authors": [
+    "Sentra Team"
+  ],
+  "capabilities": {
+    "tools": [
+      {
+        "name": "open_application",
+        "description": "Opens or activates an app and (by default) returns an initial UI snapshot in the same response. Always use this first; do NOT send any input to a newly opened app before reading its snapshot. Returns pid, name, bundleId, and snapshot{ elements[], windows[], focusedWindow, truncated }."
+      },
+      {
+        "name": "get_ui_elements",
+        "description": "Traverse the accessibility tree for a pid and return a snapshot of interactive elements with snapshot-scoped string ids (e.g. 's7-12'). Each element includes role, label, value, placeholder, path, windowId, focused, enabled, x/y/w/h, and supported actions. Element ids are valid until the cache rotates them out (typically after 2 more snapshots). Prefer find_elements when you already know what you are looking for."
+      },
+      {
+        "name": "find_elements",
+        "description": "Server-side search for elements by label/value/placeholder text and/or role. Cheaper and more reliable than scanning a get_ui_elements result by hand. Returns the same snapshot shape; matched elements are cached and immediately usable with click_element, set_value, etc."
+      },
+      {
+        "name": "get_active_window",
+        "description": "Returns the currently active window's pid, app name, title, and bounds. Useful when you do not yet have a pid and want to discover the frontmost app."
+      },
+      {
+        "name": "click_element",
+        "description": "Clicks an element by its snapshot id (e.g. 's7-12'). Uses AXPress when available, falls back to coordinate click. REQUIRES a recent get_ui_elements/find_elements snapshot for this pid. If response includes 'stale: true', call get_ui_elements again before retrying. If 'removed: true', the element is gone; re-observe and find a new one. If 'cancelled: true', the user pressed Esc; stop. Successful results include a 'delta' with the post-action focused window/element so you can decide whether to re-observe."
+      },
+      {
+        "name": "click",
+        "description": "Click at raw screen coordinates. Last-resort fallback for canvas/non-accessible apps. Prefer click_element whenever you have a snapshot id."
+      },
+      {
+        "name": "type_text",
+        "description": "Types text into the focused element. If 'id' is passed, focuses that element first AND clears it (replace=true by default) so typing replaces rather than appends. REQUIRES a recent snapshot when using 'id'. Without 'id', types into whatever currently has focus. Cancellation: if the user presses Esc mid-type, the call returns with 'cancelled: true' typically within one character."
+      },
+      {
+        "name": "set_value",
+        "description": "Directly sets a text field's value via accessibility. Instant and replaces existing content. Preferred over type_text for forms when the field is AX-editable. REQUIRES a recent snapshot id; if 'stale: true' is returned, call get_ui_elements again. Falls back to type_text if it returns an error."
+      },
+      {
+        "name": "clear_field",
+        "description": "Clears a text field by snapshot id. Tries set_value(\"\") first, falls back to focus + Cmd+A + delete. Useful before type_text when you want to replace existing content but the field is not AX-editable. REQUIRES a recent snapshot id; if 'stale: true' is returned, observe again."
+      },
+      {
+        "name": "press_key",
+        "description": "Presses a keyboard key with optional modifiers. Useful for shortcuts (Cmd+S, Cmd+L), navigation (return, escape, tab), and arrow keys. Pass 'pid' to get a focus delta back so you can decide whether to re-observe."
+      },
+      {
+        "name": "scroll",
+        "description": "Scrolls in a direction. Pass 'x'/'y' to position the mouse first (important for scrolling a specific area like a Safari content area)."
+      },
+      {
+        "name": "drag",
+        "description": "Drags from one screen coordinate to another. Use for sliders, window resize/move, drag-and-drop. NOTE: drag is uninterruptible mid-flight (the mouse button is always released even on errors) so a stuck-down mouse cannot happen."
+      },
+      {
+        "name": "act_and_observe",
+        "description": "Run a single action and immediately re-observe in one call. Eliminates the 'forgot to re-observe after navigation' failure mode. Returns { action: <action result>, snapshot: <traversal result> }."
+      },
+      {
+        "name": "take_screenshot",
+        "description": "Capture a screenshot. Defaults: jpeg, quality 0.7, scale 0.5. Set 'annotate: true' (with 'pid') to overlay element ids from the most recent snapshot so you can reference them visually."
+      },
+      {
+        "name": "list_displays",
+        "description": "Lists all connected displays with positions and dimensions."
+      },
+      {
+        "name": "start_automation_session",
+        "description": "Starts a user-visible automation session: shows the floating HUD with a clear title and enables Esc-to-cancel. Strongly recommended at the beginning of any multi-step flow, especially when the user is watching (e.g. configuring macOS, helping an elderly user). Calling this while a session is already active supersedes the previous one."
+      },
+      {
+        "name": "update_automation_session",
+        "description": "Updates the HUD's title, narration, or step counter without performing an action. Use sparingly; prefer the per-action 'narration' arg when you're already calling another tool."
+      },
+      {
+        "name": "end_automation_session",
+        "description": "Hides the HUD, stops the Esc listener, and resets the cancellation flag. Call when your flow is finished. Idle sessions auto-end after ~3 seconds of no tool calls, so this is optional but cleaner."
+      }
+    ],
+    "skills": [
+      {
+        "name": "sentra-macos-use",
+        "description": "Control macOS via accessibility APIs. Use when the user asks to interact with native Mac apps, automate UI tasks, browse the web in Safari, fill forms, navigate menus, or perform any on-screen action."
+      }
+    ]
+  },
+  "public_keys": {
+    "minisign": "RWRh6pAWTUF1v3nbeg9mR/uXP+t+6F7H6t3IGops0j57Z1kPmOstbURj"
+  },
+  "versions": [
+    {
+      "version": "1.1.4",
+      "release_date": "2026-01-06",
+      "artifacts": [
+        {
+          "os": "macos",
+          "arch": "arm64",
+          "min_macos": "13.0",
+          "url": "https://github.com/osaurus-ai/osaurus-macos-use/releases/download/1.1.4/osaurus.macos-use-1.1.4.zip",
+          "sha256": "53252a26fbc59f7a22279e4a6d5ca4da35c5d296b8b3237953b0cb01e4ea1720",
+          "size": 135725,
+          "minisign": {
+            "signature": "untrusted comment: signature from minisign secret key\nRWRh6pAWTUF1v4ZBP3zSP4nmgvSdxmgHyc2x+AK2Zl6FHbljo5UhpQiH4Z+Kl+XoB6m9W2hqNV7wzHTCzu5YZqULV7Uo2S9FJQ4=\ntrusted comment: timestamp:1767736600\tfile:osaurus.macos-use-1.1.4.zip\nM3XrLNz1K6zDkkgbklDWo0Y8O2lZjdHFMV6IVG2RQQK6moQCuhJuRiz32L5YZHMJDxijW+mtUj3xOvUX15h6Aw=="
+          }
+        }
+      ]
+    },
+    {
+      "version": "1.1.5",
+      "release_date": "2026-01-27",
+      "artifacts": [
+        {
+          "os": "macos",
+          "arch": "arm64",
+          "url": "https://github.com/osaurus-ai/osaurus-macos-use/releases/download/1.1.5/osaurus.macos-use-1.1.5-macos-arm64.zip",
+          "sha256": "1f216ff36258b56488a53808b656d02ddcc4d45032eb06bc77d95ac293e4df98",
+          "min_macos": "13.0",
+          "minisign": {
+            "signature": "untrusted comment: signature from minisign secret key\nRWRh6pAWTUF1vxqIPKWjekh9QimJPe1Dqmy/BKYDKE2Vtw9r2Oq7YEwimFxa6aqXVsdo011qEkEFzf4P4zia0F89xwXQapZ4GwE=\ntrusted comment: timestamp:1769509890\tfile:osaurus.macos-use-1.1.5-macos-arm64.zip\n5oiOBmcW23NWDo5f3cgDbPU0RsgMA9PbAOXp3qHp03dtwjAarAGR1kZPypdaZ58qo08QZLH3B9OgOu+WVWMhAw=="
+          }
+        }
+      ]
+    },
+    {
+      "version": "1.1.6",
+      "release_date": "2026-01-30",
+      "artifacts": [
+        {
+          "os": "macos",
+          "arch": "arm64",
+          "url": "https://github.com/osaurus-ai/osaurus-macos-use/releases/download/1.1.6/osaurus.macos-use-1.1.6-macos-arm64.zip",
+          "sha256": "04216ca689715fc9719d2d1d047c6cf8a72e3e7e3a40ba86e36e56b0f90a9224",
+          "min_macos": "13.0",
+          "minisign": {
+            "signature": "untrusted comment: signature from minisign secret key\nRWRh6pAWTUF1v9fC1PCMjOsP+KXa70zL+hNCG/ov/XBSpXmQkoEqGDj7di5/Df4RioAlt09XNRpuN+QR89EsBq1x10MF7GQpoAg=\ntrusted comment: timestamp:1769772749\tfile:osaurus.macos-use-1.1.6-macos-arm64.zip\nF4cSlCTQo6/4nw4TCAmlIV8aU/jylkHPuHZdSOa8z91Ss8k8jyGzCbCmowpw4Ij5qQjX7sH8/Bb8dM+NMONfBA=="
+          }
+        }
+      ]
+    },
+    {
+      "version": "1.2.0",
+      "release_date": "2026-02-12",
+      "artifacts": [
+        {
+          "os": "macos",
+          "arch": "arm64",
+          "url": "https://github.com/osaurus-ai/osaurus-macos-use/releases/download/1.2.0/osaurus.macos-use-1.2.0-macos-arm64.zip",
+          "sha256": "9bbb809e804716b229ac06100903138fd9c0fd228f5ac52b12fde287004ab7d5",
+          "min_macos": "13.0",
+          "minisign": {
+            "signature": "untrusted comment: signature from minisign secret key\nRWRh6pAWTUF1v7mciH34h8WEE3+dN2/5FgRk0xaG/Pv2K2l2eygSDGjfpjEVg+Ce+uL+3rbGHJ4yCgRobuxwku2U/76K702dLgo=\ntrusted comment: timestamp:1770919980\tfile:osaurus.macos-use-1.2.0-macos-arm64.zip\ncqqJJ75N0jnIIZCrq4ubQAbPtIsoX4ZYTZPF+f3qSoaPSP5x48pnKbvh7/obADvK+AlCj6oTLyEbyrU9UqJ1Ag=="
+          }
+        }
+      ]
+    },
+    {
+      "version": "1.2.1",
+      "release_date": "2026-02-12",
+      "artifacts": [
+        {
+          "os": "macos",
+          "arch": "arm64",
+          "url": "https://github.com/osaurus-ai/osaurus-macos-use/releases/download/1.2.1/osaurus.macos-use-1.2.1-macos-arm64.zip",
+          "sha256": "68f95a0cacde041bf42d287e76db0e462668954a07966f7dffc2820a15fbcd51",
+          "min_macos": "13.0",
+          "minisign": {
+            "signature": "untrusted comment: signature from minisign secret key\nRWRh6pAWTUF1v0h9VVtSDqa+bPRU2ZrmJImN4fsugkkV4oEsc88UPQN+6acT7SAM+QArmKJlqkAV9zhcnXChgKhbzPzkicwCzQM=\ntrusted comment: timestamp:1770920809\tfile:osaurus.macos-use-1.2.1-macos-arm64.zip\nt7iYaa1G2w2BhEnauj1vvTWG3O7eqXXfF5ENSe9FNxq53ttmCoXpxDW0hliPi3zmGw9xzrajQ9iWIm9nw1urAQ=="
+          }
+        }
+      ]
+    },
+    {
+      "version": "2.0.0",
+      "release_date": "2026-04-23",
+      "artifacts": [
+        {
+          "os": "macos",
+          "arch": "arm64",
+          "url": "https://github.com/osaurus-ai/osaurus-macos-use/releases/download/2.0.0/osaurus.macos-use-2.0.0-macos-arm64.zip",
+          "sha256": "9c694dfade254566ed6af44898e938c4f8f41452665c37ef6df43ba85f91f2a7",
+          "min_macos": "13.0",
+          "minisign": {
+            "signature": "untrusted comment: signature from minisign secret key\nRWRh6pAWTUF1v9KZKq/8+t1TFugYnRX9aZBIqgvuTvl7hTJ2VBCmrUCZoPgxTfm7+KXs9mawjNYIEfQ8Zy8zq7KHy8BZpUeV3A8=\ntrusted comment: timestamp:1776947843\tfile:osaurus.macos-use-2.0.0-macos-arm64.zip\n1cWMDkjWuSLlVg3buAEPsDNr9UivV7Zf6XnWaCDgWC/YNW/ReAFjAV8C3mwrPSlMPtZPvKRA4yzl0PTHYmypBg=="
+          }
+        }
+      ]
+    }
+  ]
+}
